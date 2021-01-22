@@ -1,11 +1,13 @@
 from core.objects.classes import Token
-from core.objects.types import NEWLINE, EXPR
 from core.objects.tools import get_token_index
 from core.semantic.models import models, match, parsers
-from core.objects.classes import FunctionCall, VarAssign
+from core.objects.classes import (FunctionCall, VarAssign, ReturnStatement,
+                                  ConditionBranch)
+from core.objects.types import (NEWLINE, EXPR, IF_BLOCK,
+                                ELIF_BLOCK, ELSE_BLOCK,)
 
 
-READ_VALUE_UNTIL_NEWLINE = (VarAssign,)
+READ_VALUE_UNTIL_NEWLINE = (VarAssign, ReturnStatement)
 ALSO_EXPRS = (FunctionCall,)
 
 
@@ -17,6 +19,36 @@ def startswith(tokens: list):
             return model_class, matched, original_tokens_len
 
     return None, None, 0
+
+
+def branches_leaves_to_branches_trees(tokens):
+    temp_branch = None
+    output_tokens = []
+
+    for token in tokens:
+        if token.type in (IF_BLOCK, ELIF_BLOCK, ELSE_BLOCK):
+            # made to catch elif-else exprs without if-exprs
+
+            if temp_branch is None:
+                if token.type != IF_BLOCK:
+                    raise SyntaxError('Found elif/else statement, but no if statements found')
+
+                temp_branch = ConditionBranch(token)
+            else:
+                if token.type == ELIF_BLOCK:
+                    temp_branch.add_elif_branch(token)
+                else:
+                    temp_branch.set_else_branch(token)
+        elif temp_branch:
+            output_tokens.extend((temp_branch, token))
+            temp_branch = None
+        else:
+            output_tokens.append(token)
+
+    if temp_branch:
+        output_tokens.append(temp_branch)
+
+    return output_tokens
 
 
 def parse(lexemes):
@@ -63,4 +95,4 @@ def parse(lexemes):
     if temp_expr:
         output.append(Token(EXPR, temp_expr))
 
-    return output
+    return branches_leaves_to_branches_trees(output)
