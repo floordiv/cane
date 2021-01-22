@@ -1,12 +1,25 @@
-class Generator:
-    def __init__(self, code):
-        self.code = code
-
-    def generate_py_code(self):
-        ...
+from core.transpiler.python.indents import indents
+from core.transpiler.python.builder import builders
 
 
-def generate(code):
-    generator = Generator(code)
+def remove_useless_newlines(source):
+    return source.strip('\n') + '\n'
 
-    return generator.generate_py_code()
+
+def generate(code, indent=0):
+    source = ''
+    indentation = '    ' * indent
+
+    for token in code:
+        if token.type not in builders:
+            raise Warning('Unsupported token: ' + str(token))
+
+        py_source = builders[token.type](generate, token, indent=indent)
+        justified_by_indentation = indentation + indentation.join(py_source.splitlines(keepends=True))
+
+        if token.type in indents:
+            justified_by_indentation = indents[token.type](justified_by_indentation)
+
+        source += justified_by_indentation
+
+    return remove_useless_newlines(source)
