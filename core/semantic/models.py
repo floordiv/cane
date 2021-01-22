@@ -1,20 +1,24 @@
 from core.objects.types import (BRACES, FBRACES, QBRACES,
                                 VARIABLE, EQUALS, ANY)
 from core.objects.classes import (MatchToken, FunctionCall, Function,
-                                  VarAssign)
-from core.semantic.parsers import (var_assign, function, function_call)
-from core.objects.keywords import FUNCASSIGN_KEYWORD
+                                  VarAssign, ReturnStatement)
+from core.semantic.parsers import (var_assign, function, function_call,
+                                   return_statement,)
+from core.objects.keywords import (FUNCASSIGN_KEYWORD, RETURN_KEYWORD, IF_KEYWORD,
+                                   ELIF_KEYWORD, ELSE_KEYWORD)
 
 
 models = {
     VarAssign: (MatchToken(VARIABLE), MatchToken(EQUALS), MatchToken(ANY)),
     Function: (MatchToken(FUNCASSIGN_KEYWORD), MatchToken(VARIABLE), MatchToken(BRACES), MatchToken(FBRACES)),
     FunctionCall: (MatchToken(VARIABLE), MatchToken(BRACES)),
+    ReturnStatement: (MatchToken(RETURN_KEYWORD), MatchToken(ANY)),
 }
 parsers = {
     VarAssign: var_assign,
     Function: function,
     FunctionCall: function_call,
+    ReturnStatement: return_statement,
 }
 
 
