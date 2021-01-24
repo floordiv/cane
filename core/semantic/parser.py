@@ -34,6 +34,9 @@ def branches_leaves_to_branches_trees(tokens):
                     raise SyntaxError('Found elif/else statement, but no if statements found')
 
                 temp_branch = ConditionBranch(token)
+            elif temp_branch is not None and token.type == IF_BLOCK:
+                output_tokens.append(temp_branch)
+                temp_branch = ConditionBranch(token)
             else:
                 if token.type == ELIF_BLOCK:
                     temp_branch.add_elif_branch(token)
