@@ -19,6 +19,7 @@ EXPR = 'EXPR'   # function calls, math operations, etc.
 IF_BLOCK = 'IF_BLOCK'
 ELIF_BLOCK = 'ELIF_BLOCK'
 ELSE_BLOCK = 'ELSE_BLOCK'
+CONDITION_BRANCH = 'CONDITION_BRANCH'   # summary for 3 previous class-types
 
 PARENTHESIS = 'PARENTHESIS'  # common name
 BRACES = 'BRACES'    # ()
