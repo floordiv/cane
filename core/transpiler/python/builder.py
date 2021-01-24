@@ -4,7 +4,7 @@ from core.transpiler.python.forms import (function_form, function_call_form, var
                                           return_form, if_branch_form, elif_branch_form, else_branch_form,)
 from core.objects.types import (FUNCTION_CALL, FUNCTION, VARASSIGN,
                                 RETURN_STATEMENT, EXPR, INTEGER,
-                                FLOAT, STRING, BOOL, VARIABLE)
+                                FLOAT, STRING, BOOL, VARIABLE, CONDITION_BRANCH)
 
 
 def function_call(source_gen, token, indent):
@@ -26,17 +26,17 @@ def varassign(source_gen, token, indent):
 
 def branch(source_gen, token, indent):
     if_branch = token.if_branch
-    if_branch_expr = expr(source_gen, if_branch.expr, indent)
-    if_branch_body = source_gen(if_branch.body)
+    if_branch_expr = expr(source_gen, if_branch.expr, indent, from_token=False)
+    if_branch_body = source_gen(if_branch.body, indent=indent + 1)
     whole_branch = if_branch_form.format(expr=if_branch_expr, code=if_branch_body) + '\n'
 
     for elif_branch in token.elif_branches:
-        elif_branch_expr = expr(source_gen, elif_branch.expr, indent)
-        elif_branch_body = source_gen(elif_branch.body)
+        elif_branch_expr = expr(source_gen, elif_branch.expr, indent, from_token=False)
+        elif_branch_body = source_gen(elif_branch.body, indent=indent + 1)
         whole_branch += elif_branch_form.format(expr=elif_branch_expr, code=elif_branch_body) + '\n'
 
     if token.else_branch:
-        whole_branch += else_branch_form.format(code=source_gen(token.else_branch.body)) + '\n'
+        whole_branch += else_branch_form.format(code=source_gen(token.else_branch.body, indent=indent + 1)) + '\n'
 
     return whole_branch
 
@@ -50,12 +50,17 @@ def return_statement(source_gen, token, indent):
     return return_form.format(val=source_gen(value))
 
 
-def expr(source_gen, token, indent):
+def expr(source_gen, values, indent, from_token=True):
+    if from_token:
+        values = values.value
+
     elements = []
 
-    for element in token.value:
+    for element in values:
         if element.type == FUNCTION_CALL:
             elements.append(function_call(source_gen, element, indent))
+        elif element.type == EXPR:
+            elements.append(expr(source_gen, element, indent))
         else:
             elements.append(str(element.value))
 
@@ -102,4 +107,5 @@ builders = {
     FLOAT: valueof,
     STRING: valueof,
     BOOL: valueof,
+    CONDITION_BRANCH: branch,
 }
