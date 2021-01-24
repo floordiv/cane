@@ -1,7 +1,8 @@
 from core.objects.tools import split_tokens
 from core.objects.types import COMMA, VARASSIGN, EXPR
 from core.objects.classes import (Function, FunctionCall, VarAssign,
-                                  ReturnStatement, IfBranchLeaf, ElseBranchLeaf)
+                                  ReturnStatement, IfBranchLeaf, ElifBranchLeaf,
+                                  ElseBranchLeaf)
 
 
 def function(parser, tokens):
@@ -29,11 +30,18 @@ def var_assign(parser, tokens):
     return VarAssign(var, val)
 
 
-def if_elif_branch(parser, tokens):
+def if_branch(parser, tokens):
     _, expr, raw_body = tokens
     body = parser(raw_body.value)
 
     return IfBranchLeaf(expr.value, body)
+
+
+def elif_branch(parser, tokens):
+    _, expr, raw_body = tokens
+    body = parser(raw_body.value)
+
+    return ElifBranchLeaf(expr.value, body)
 
 
 def else_branch(parser, tokens):
