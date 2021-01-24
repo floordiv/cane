@@ -11,6 +11,8 @@ func my_func() {
 
 if (5 == 5) {
     print('5 is 5')
+} elif (6 == 6) {
+    print('6 is 6')
 } else {
     print('wait, what?')
 }
