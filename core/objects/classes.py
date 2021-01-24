@@ -1,5 +1,7 @@
 from core.objects.types import (ANY, FUNCTION_CALL, FUNCTION,
-                                VARASSIGN, RETURN_STATEMENT)
+                                VARASSIGN, RETURN_STATEMENT,
+                                CONDITION_BRANCH, IF_BLOCK,
+                                ELIF_BLOCK, ELSE_BLOCK)
 
 
 class Token:
@@ -65,19 +67,33 @@ class VarAssign(Token):
     __repr__ = __str__
 
 
-class IfBranchLeaf:
+class IfBranchLeaf(Token):
     def __init__(self, expr, body):
+        super(IfBranchLeaf, self).__init__(IF_BLOCK, body)
+
         self.expr = expr
         self.body = body
 
 
-class ElseBranchLeaf:
-    def __init__(self, body):
+class ElifBranchLeaf(Token):
+    def __init__(self, expr, body):
+        super(ElifBranchLeaf, self).__init__(ELIF_BLOCK, body)
+
+        self.expr = expr
         self.body = body
 
 
-class ConditionBranch:
+class ElseBranchLeaf(Token):
+    def __init__(self, body):
+        super(ElseBranchLeaf, self).__init__(ELSE_BLOCK, body)
+
+        self.body = body
+
+
+class ConditionBranch(Token):
     def __init__(self, if_branch=None):
+        super(ConditionBranch, self).__init__(CONDITION_BRANCH, if_branch)
+
         self.if_branch = if_branch
         self.elif_branches = []
         self.else_branch = None
