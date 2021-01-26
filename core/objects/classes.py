@@ -1,7 +1,4 @@
-from core.objects.types import (ANY, FUNCTION_CALL, FUNCTION,
-                                VARASSIGN, RETURN_STATEMENT,
-                                CONDITION_BRANCH, IF_BLOCK,
-                                ELIF_BLOCK, ELSE_BLOCK)
+import core.objects.types as types
 
 
 class Token:
@@ -23,11 +20,11 @@ class MatchToken:
     token for semantic to match constructions
     """
     
-    def __init__(self, *types):
-        self.types = types
+    def __init__(self, *token_types):
+        self.types = token_types
 
     def match(self, token: Token):
-        return (ANY in self.types) or (token.type in self.types) or (token.primary_type in self.types)
+        return (types.ANY in self.types) or (token.type in self.types) or (token.primary_type in self.types)
 
     def __str__(self):
         return f'MatchToken({", ".join(self.types)})'
@@ -37,7 +34,7 @@ class MatchToken:
 
 class FunctionCall(Token):
     def __init__(self, name, args, kwargs):
-        super(FunctionCall, self).__init__(FUNCTION_CALL, name)
+        super(FunctionCall, self).__init__(types.FUNCTION_CALL, name)
 
         self.name = name
         self.args = args
@@ -46,7 +43,7 @@ class FunctionCall(Token):
 
 class Function(Token):
     def __init__(self, name, args, kwargs, code):
-        super(Function, self).__init__(FUNCTION, name)
+        super(Function, self).__init__(types.FUNCTION, name)
 
         self.name = name
         self.args = args
@@ -56,7 +53,7 @@ class Function(Token):
 
 class VarAssign(Token):
     def __init__(self, var, val):
-        super(VarAssign, self).__init__(VARASSIGN, var)
+        super(VarAssign, self).__init__(types.VARASSIGN, var)
 
         self.var = var.value
         self.val = val
@@ -69,7 +66,7 @@ class VarAssign(Token):
 
 class IfBranchLeaf(Token):
     def __init__(self, expr, body):
-        super(IfBranchLeaf, self).__init__(IF_BLOCK, body)
+        super(IfBranchLeaf, self).__init__(types.IF_BLOCK, body)
 
         self.expr = expr
         self.body = body
@@ -77,7 +74,7 @@ class IfBranchLeaf(Token):
 
 class ElifBranchLeaf(Token):
     def __init__(self, expr, body):
-        super(ElifBranchLeaf, self).__init__(ELIF_BLOCK, body)
+        super(ElifBranchLeaf, self).__init__(types.ELIF_BLOCK, body)
 
         self.expr = expr
         self.body = body
@@ -85,14 +82,14 @@ class ElifBranchLeaf(Token):
 
 class ElseBranchLeaf(Token):
     def __init__(self, body):
-        super(ElseBranchLeaf, self).__init__(ELSE_BLOCK, body)
+        super(ElseBranchLeaf, self).__init__(types.ELSE_BLOCK, body)
 
         self.body = body
 
 
 class ConditionBranch(Token):
     def __init__(self, if_branch=None):
-        super(ConditionBranch, self).__init__(CONDITION_BRANCH, if_branch)
+        super(ConditionBranch, self).__init__(types.CONDITION_BRANCH, if_branch)
 
         self.if_branch = if_branch
         self.elif_branches = []
@@ -107,4 +104,14 @@ class ConditionBranch(Token):
 
 class ReturnStatement(Token):
     def __init__(self, value):
-        super(ReturnStatement, self).__init__(RETURN_STATEMENT, value)
+        super(ReturnStatement, self).__init__(types.RETURN_STATEMENT, value)
+
+
+class ContinueStatement(Token):
+    def __init__(self):
+        super(ContinueStatement, self).__init__(types.CONTINUE_STATEMENT, None)
+
+
+class BreakStatement(Token):
+    def __init__(self):
+        super(BreakStatement, self).__init__(types.BREAK_STATEMENT, None)
