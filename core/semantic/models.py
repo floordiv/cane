@@ -1,32 +1,29 @@
-from core.objects.types import (BRACES, FBRACES, QBRACES,
-                                VARIABLE, EQUALS, ANY)
-from core.objects.classes import (MatchToken, FunctionCall, Function,
-                                  VarAssign, ReturnStatement, IfBranchLeaf,
-                                  ElifBranchLeaf, ElseBranchLeaf)
-from core.semantic.parsers import (var_assign, function, function_call,
-                                   return_statement, if_branch, elif_branch,
-                                   else_branch)
-from core.objects.keywords import (FUNCASSIGN_KEYWORD, RETURN_KEYWORD, IF_KEYWORD,
-                                   ELIF_KEYWORD, ELSE_KEYWORD)
+import core.objects.types as types
+import core.objects.classes as classes
+import core.objects.keywords as keywords
+import core.semantic.parsers as tokens_parsers
+
+from core.objects.classes import MatchToken
 
 
 models = {
-    VarAssign: (MatchToken(VARIABLE), MatchToken(EQUALS), MatchToken(ANY)),
-    Function: (MatchToken(FUNCASSIGN_KEYWORD), MatchToken(VARIABLE), MatchToken(BRACES), MatchToken(FBRACES)),
-    FunctionCall: (MatchToken(VARIABLE), MatchToken(BRACES)),
-    ReturnStatement: (MatchToken(RETURN_KEYWORD), MatchToken(ANY)),
-    IfBranchLeaf: (MatchToken(IF_KEYWORD), MatchToken(BRACES), MatchToken(FBRACES)),
-    ElifBranchLeaf: (MatchToken(ELIF_KEYWORD), MatchToken(BRACES), MatchToken(FBRACES)),
-    ElseBranchLeaf: (MatchToken(ELSE_KEYWORD), MatchToken(FBRACES)),
+    classes.VarAssign: (MatchToken(types.VARIABLE), MatchToken(types.EQUALS), MatchToken(types.ANY)),
+    classes.Function: (MatchToken(keywords.FUNCASSIGN_KEYWORD), MatchToken(types.VARIABLE), MatchToken(types.BRACES),
+                       MatchToken(types.FBRACES)),
+    classes.FunctionCall: (MatchToken(types.VARIABLE), MatchToken(types.BRACES)),
+    classes.ReturnStatement: (MatchToken(keywords.RETURN_KEYWORD), MatchToken(types.ANY)),
+    classes.IfBranchLeaf: (MatchToken(keywords.IF_KEYWORD), MatchToken(types.BRACES), MatchToken(types.FBRACES)),
+    classes.ElifBranchLeaf: (MatchToken(keywords.ELIF_KEYWORD), MatchToken(types.BRACES), MatchToken(types.FBRACES)),
+    classes.ElseBranchLeaf: (MatchToken(keywords.ELSE_KEYWORD), MatchToken(types.FBRACES)),
 }
 parsers = {
-    VarAssign: var_assign,
-    Function: function,
-    FunctionCall: function_call,
-    ReturnStatement: return_statement,
-    IfBranchLeaf: if_branch,
-    ElifBranchLeaf: elif_branch,
-    ElseBranchLeaf: else_branch,
+    classes.VarAssign: tokens_parsers.var_assign,
+    classes.Function: tokens_parsers.function,
+    classes.FunctionCall: tokens_parsers.function_call,
+    classes.ReturnStatement: tokens_parsers.return_statement,
+    classes.IfBranchLeaf: tokens_parsers.if_branch,
+    classes.ElifBranchLeaf: tokens_parsers.elif_branch,
+    classes.ElseBranchLeaf: tokens_parsers.else_branch,
 }
 
 
