@@ -1,7 +1,11 @@
 import core.objects.classes as classes
 from core.objects.tools import split_tokens
-from core.objects.types import (COMMA, VARASSIGN, EXPR,
-                                COLON, SEMICOLON)
+import core.objects.types as types
+
+
+"""
+_ in variables unpacking of tokens means, that this is a useless token (e.g. keyword)
+"""
 
 
 def function(parser, tokens):
@@ -23,7 +27,7 @@ def var_assign(parser, tokens):
     var, _, *raw_val = tokens
     val = parser(raw_val)[0]
 
-    if val.type == EXPR:
+    if val.type == types.EXPR:
         val = val.value[0]
 
     return classes.VarAssign(var, val)
@@ -73,7 +77,7 @@ def while_loop(parser, tokens):
 
 def for_loop(parser, tokens):
     _, begin_end_step, body = tokens
-    split_begin_end_step = split_tokens(begin_end_step.value, SEMICOLON)
+    split_begin_end_step = split_tokens(begin_end_step.value, types.SEMICOLON)
 
     if len(split_begin_end_step) != 3:
         raise SyntaxError('bad syntax in for-loop expression statement')
@@ -83,18 +87,24 @@ def for_loop(parser, tokens):
     return classes.ForLoop(begin, end, step, parser(body.value))
 
 
+def import_statement(parser, tokens):
+    _, path, _, import_as = tokens
+
+    return classes.ImportStatement(path, import_as)
+
+
 def _parse_args(parser, args, leave_tokens=True):
     if not args:
         return [], {}
 
-    elements = split_tokens(args, COMMA)
+    elements = split_tokens(args, types.COMMA)
     args = []
     kwargs = {}
 
     for element in elements:
         parsed_element = parser(element)[0]
 
-        if parsed_element.type != VARASSIGN:    # to accept all the structures inside
+        if parsed_element.type != types.VARASSIGN:    # to accept all the structures inside
             arg = parsed_element.value[0]
 
             if not leave_tokens:
