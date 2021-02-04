@@ -20,6 +20,8 @@ IF_BLOCK = 'IF_BLOCK'
 ELIF_BLOCK = 'ELIF_BLOCK'
 ELSE_BLOCK = 'ELSE_BLOCK'
 CONDITION_BRANCH = 'CONDITION_BRANCH'   # summary for 3 previous class-types
+WHILE_LOOP = 'WHILE_LOOP'
+FOR_LOOP = 'FOR_LOOP'
 
 PARENTHESIS = 'PARENTHESIS'  # common name
 BRACES = 'BRACES'    # ()
@@ -30,5 +32,6 @@ NEWLINE = characters['\n']
 DOT = characters['.']
 COMMA = characters[',']
 COLON = characters[':']
+SEMICOLON = characters[';']
 EQUALS = characters['=']
 ANY = 'ANY'
