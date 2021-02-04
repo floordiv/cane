@@ -19,6 +19,8 @@ models = {
     classes.ForLoop: (MatchToken(keywords.FOR_LOOP_KEYWORD), MatchToken(types.BRACES), MatchToken(types.FBRACES)),
     classes.BreakStatement: (MatchToken(keywords.BREAK_KEYWORD),),
     classes.ContinueStatement: (MatchToken(keywords.CONTINUE_KEYWORD),),
+    classes.ImportStatement: (MatchToken(keywords.IMPORT_KEYWORD), MatchToken(types.STRING),
+                              MatchToken(keywords.AS_KEYWORD), MatchToken(types.VARIABLE)),
 }
 parsers = {
     classes.VarAssign: tokens_parsers.var_assign,
@@ -32,6 +34,7 @@ parsers = {
     classes.ForLoop: tokens_parsers.for_loop,
     classes.BreakStatement: tokens_parsers.break_statement,
     classes.ContinueStatement: tokens_parsers.continue_statement,
+    classes.ImportStatement: tokens_parsers.import_statement,
 }
 
 
