@@ -15,6 +15,10 @@ models = {
     classes.IfBranchLeaf: (MatchToken(keywords.IF_KEYWORD), MatchToken(types.BRACES), MatchToken(types.FBRACES)),
     classes.ElifBranchLeaf: (MatchToken(keywords.ELIF_KEYWORD), MatchToken(types.BRACES), MatchToken(types.FBRACES)),
     classes.ElseBranchLeaf: (MatchToken(keywords.ELSE_KEYWORD), MatchToken(types.FBRACES)),
+    classes.WhileLoop: (MatchToken(keywords.WHILE_LOOP_KEYWORD), MatchToken(types.BRACES), MatchToken(types.FBRACES)),
+    classes.ForLoop: (MatchToken(keywords.FOR_LOOP_KEYWORD), MatchToken(types.BRACES), MatchToken(types.FBRACES)),
+    classes.BreakStatement: (MatchToken(keywords.BREAK_KEYWORD),),
+    classes.ContinueStatement: (MatchToken(keywords.CONTINUE_KEYWORD),),
 }
 parsers = {
     classes.VarAssign: tokens_parsers.var_assign,
@@ -24,6 +28,10 @@ parsers = {
     classes.IfBranchLeaf: tokens_parsers.if_branch,
     classes.ElifBranchLeaf: tokens_parsers.elif_branch,
     classes.ElseBranchLeaf: tokens_parsers.else_branch,
+    classes.WhileLoop: tokens_parsers.while_loop,
+    classes.ForLoop: tokens_parsers.for_loop,
+    classes.BreakStatement: tokens_parsers.break_statement,
+    classes.ContinueStatement: tokens_parsers.continue_statement,
 }
 
 
