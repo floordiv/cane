@@ -1,8 +1,7 @@
+import core.objects.classes as classes
 from core.objects.tools import split_tokens
-from core.objects.types import COMMA, VARASSIGN, EXPR
-from core.objects.classes import (Function, FunctionCall, VarAssign,
-                                  ReturnStatement, IfBranchLeaf, ElifBranchLeaf,
-                                  ElseBranchLeaf)
+from core.objects.types import (COMMA, VARASSIGN, EXPR,
+                                COLON, SEMICOLON)
 
 
 def function(parser, tokens):
@@ -10,14 +9,14 @@ def function(parser, tokens):
     body = parser(raw_body.value)
     args, kwargs = _parse_args(parser, raw_args.value)
 
-    return Function(name.value, args, kwargs, body)
+    return classes.Function(name.value, args, kwargs, body)
 
 
 def function_call(parser, tokens):
     name, raw_args = tokens
     args, kwargs = _parse_args(parser, raw_args.value)
 
-    return FunctionCall(name.value, args, kwargs)
+    return classes.FunctionCall(name.value, args, kwargs)
 
 
 def var_assign(parser, tokens):
@@ -27,35 +26,61 @@ def var_assign(parser, tokens):
     if val.type == EXPR:
         val = val.value[0]
 
-    return VarAssign(var, val)
+    return classes.VarAssign(var, val)
 
 
 def if_branch(parser, tokens):
     _, expr, raw_body = tokens
     body = parser(raw_body.value)
 
-    return IfBranchLeaf(expr.value, body)
+    return classes.IfBranchLeaf(expr.value, body)
 
 
 def elif_branch(parser, tokens):
     _, expr, raw_body = tokens
     body = parser(raw_body.value)
 
-    return ElifBranchLeaf(expr.value, body)
+    return classes.ElifBranchLeaf(expr.value, body)
 
 
 def else_branch(parser, tokens):
     _, raw_body = tokens
     body = parser(raw_body.value)
 
-    return ElseBranchLeaf(body)
+    return classes.ElseBranchLeaf(body)
 
 
 def return_statement(parser, tokens):
     _, *raw_value = tokens
     value = parser(raw_value)[0]
 
-    return ReturnStatement(value)
+    return classes.ReturnStatement(value)
+
+
+def continue_statement(parser, tokens):
+    return classes.ContinueStatement()
+
+
+def break_statement(parser, tokens):
+    return classes.BreakStatement()
+
+
+def while_loop(parser, tokens):
+    _, expr, body = tokens
+
+    return classes.WhileLoop(parser(expr.value), parser(body.value))
+
+
+def for_loop(parser, tokens):
+    _, begin_end_step, body = tokens
+    split_begin_end_step = split_tokens(begin_end_step.value, SEMICOLON)
+
+    if len(split_begin_end_step) != 3:
+        raise SyntaxError('bad syntax in for-loop expression statement')
+
+    begin, end, step = map(parser, split_begin_end_step)
+
+    return classes.ForLoop(begin, end, step, parser(body.value))
 
 
 def _parse_args(parser, args, leave_tokens=True):
