@@ -1,4 +1,3 @@
-from core.transpiler.python.indents import indents
 from core.transpiler.python.builder import builders
 
 
@@ -16,10 +15,6 @@ def generate(code, indent=0):
 
         py_source = builders[token.type](generate, token, indent=indent)
         justified_by_indentation = indentation + indentation.join(py_source.splitlines(keepends=True))
-
-        if token.type in indents:
-            justified_by_indentation = indents[token.type](justified_by_indentation)
-
         source += justified_by_indentation
 
     return remove_useless_newlines(source)
