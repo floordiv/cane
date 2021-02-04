@@ -102,6 +102,22 @@ class ConditionBranch(Token):
         self.else_branch = branch
 
 
+class WhileLoop(Token):
+    def __init__(self, expr, body):
+        self.expr = expr
+        self.body = body
+        super(WhileLoop, self).__init__(types.WHILE_LOOP, expr)
+
+
+class ForLoop(Token):
+    def __init__(self, begin, end, step, body):
+        self.begin = begin
+        self.end = end
+        self.step = step
+        self.body = body
+        super(ForLoop, self).__init__(types.FOR_LOOP, end)
+
+
 class ReturnStatement(Token):
     def __init__(self, value):
         super(ReturnStatement, self).__init__(types.RETURN_STATEMENT, value)
