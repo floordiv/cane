@@ -104,18 +104,20 @@ class ConditionBranch(Token):
 
 class WhileLoop(Token):
     def __init__(self, expr, body):
+        super(WhileLoop, self).__init__(types.WHILE_LOOP, expr)
+
         self.expr = expr
         self.body = body
-        super(WhileLoop, self).__init__(types.WHILE_LOOP, expr)
 
 
 class ForLoop(Token):
     def __init__(self, begin, end, step, body):
+        super(ForLoop, self).__init__(types.FOR_LOOP, end)
+
         self.begin = begin
         self.end = end
         self.step = step
         self.body = body
-        super(ForLoop, self).__init__(types.FOR_LOOP, end)
 
 
 class ReturnStatement(Token):
@@ -131,3 +133,11 @@ class ContinueStatement(Token):
 class BreakStatement(Token):
     def __init__(self):
         super(BreakStatement, self).__init__(types.BREAK_STATEMENT, None)
+
+
+class ImportStatement(Token):
+    def __init__(self, package_path, import_as):
+        super(ImportStatement, self).__init__(types.IMPORT_STATEMENT, package_path)
+
+        self.path = package_path
+        self.import_as = import_as
