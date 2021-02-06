@@ -1,7 +1,9 @@
-classes
-own priorities (to avoid UB in transpiler, etc.)
 NOT operators
+classes
 lists
 dicts
-variables unpacking
 eval/exec
+variables unpacking
+
+# for compiler/transpiler
+own priorities (to avoid UB in transpiler, etc.)
