@@ -62,6 +62,14 @@ class VarAssign(Token):
         return f'VarAssign({self.var} = {repr(self.val)})'
 
     __repr__ = __str__
+    
+    
+class VarUnpackingAssign(Token):
+    def __init__(self, var, val):
+        super(VarUnpackingAssign, self).__init__(types.VARASSIGN, var)
+
+        self.var = var
+        self.val = val
 
 
 class IfBranchLeaf(Token):
@@ -141,3 +149,8 @@ class ImportStatement(Token):
 
         self.path = package_path
         self.import_as = import_as
+
+
+class Variable(Token):
+    def __init__(self, path):
+        super(Variable, self).__init__(types.VARIABLE, path)
