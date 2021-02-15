@@ -7,3 +7,14 @@ variables unpacking
 
 # for compiler/transpiler
 own priorities (to avoid UB in transpiler, etc.)
+
+
+What already done:
+    Function calls
+    Functions declaring
+    Variables declaring
+    Condition branches
+    While loops
+    For loops
+    Return, continue, break statements
+    Import statements
