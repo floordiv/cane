@@ -33,6 +33,12 @@ def var_assign(parser, tokens):
     return classes.VarAssign(var, val)
 
 
+def var_unpack_assign(parser, tokens):
+    simple_var_assign_token = var_assign(parser, tokens)
+
+    return classes.VarUnpackingAssign(simple_var_assign_token.var, simple_var_assign_token.val)
+
+
 def if_branch(parser, tokens):
     _, expr, raw_body = tokens
     body = parser(raw_body.value)
