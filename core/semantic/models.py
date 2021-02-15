@@ -8,6 +8,7 @@ from core.objects.classes import MatchToken
 
 models = {
     classes.VarAssign: (MatchToken(types.VARIABLE), MatchToken(types.EQUALS), MatchToken(types.ANY)),
+    classes.VarUnpackingAssign: (MatchToken(types.BRACES), MatchToken(types.EQUALS), MatchToken(types.ANY)),
     classes.Function: (MatchToken(keywords.FUNCASSIGN_KEYWORD), MatchToken(types.VARIABLE), MatchToken(types.BRACES),
                        MatchToken(types.FBRACES)),
     classes.FunctionCall: (MatchToken(types.VARIABLE), MatchToken(types.BRACES)),
@@ -24,6 +25,7 @@ models = {
 }
 parsers = {
     classes.VarAssign: tokens_parsers.var_assign,
+    classes.VarUnpackingAssign: tokens_parsers.var_unpack_assign,
     classes.Function: tokens_parsers.function,
     classes.FunctionCall: tokens_parsers.function_call,
     classes.ReturnStatement: tokens_parsers.return_statement,
