@@ -1,5 +1,4 @@
-from core.lex.lexer import Lexer
-from core.semantic.parser import parse
+from core.frontend.parser import parse
 
 
 code = """
@@ -21,7 +20,4 @@ while (i < 5) {
 }
 """
 
-lexer = Lexer(code)
-lexemes = lexer.parse()
-final = parse(lexemes)
-print(final)
+print(parse(code))
