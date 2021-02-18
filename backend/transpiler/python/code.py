@@ -1,4 +1,4 @@
-from core.transpiler.python.builder import builders
+from backend.transpiler.python.builder import builders
 
 
 def remove_useless_newlines(source):
