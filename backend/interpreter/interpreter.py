@@ -4,7 +4,7 @@ from lib.std import builtins
 from core.objects import classes
 from core.frontend.parser import parse
 from backend.interpreter.scopes import Scope
-from backend.interpreter.internal_tokens import original_tokens2internal, Token
+from backend.interpreter.internal_tokens import original_tokens2internal
 
 DEDICATED_SCOPES_FOR_TOKENS = (
     classes.Function,
@@ -17,7 +17,7 @@ def interpret(raw: str):
 
 def gen_scopes(tokens):
     current_scope = Scope(init_vars=builtins.binds)
-    final_tokens: List[List[Token, Scope]] = []
+    final_tokens: List[List[classes.Token, Scope]] = []
 
     for token in tokens:
         if classof(token) in DEDICATED_SCOPES_FOR_TOKENS:
