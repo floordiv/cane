@@ -77,6 +77,9 @@ class VarAssign(classes.Token):
         self.var = original_class.var.value
         self.val = original_class.val
 
+    def execute(self, scope):
+        scope.set(self.var, evaluate(self.val, scope))
+
     def __str__(self):
         return f'VarAssign({self.var} = {repr(self.val)})'
 
