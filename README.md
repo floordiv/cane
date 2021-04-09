@@ -1,4 +1,4 @@
 # Cane
-Cane is primary a front-end for Lotus, but also contains python-transpiler (unmaintained cause of it's useless), compiler (development will begin after I'll become a bit smarter), interpreter.
+Cane is a simple scripting language. Contains front-end (full capability with Lotus), but currently implementing only interpreter (in progress).
 
-For language details, see [canonical Lotus interpreter implementation](github.con/floordiv/lily) (local interpreter will have a full-support of the previous implementation code)
+Interpreter is useless in standalone production, cause it's too slow (imagine writing vm-less interpreter using interpreting python). But good as an integrable scripting language, like Lua (but in Python).
