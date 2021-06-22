@@ -1,6 +1,6 @@
 # Cane
 
-PROJECT IS CURRENTLY FREEZED 
+PROJECT IS CURRENTLY FROZEN 
 
 Cane is a simple scripting language. Contains front-end (full capability with Lotus), but currently implementing only interpreter (in progress).
 
